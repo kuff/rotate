@@ -15,19 +15,22 @@ def main_loop():
 
     # request desired rotation in degrees
     desired_rotation = input(
-        'Please specify the desired rotation of ' + image_file_name + ': ')
+        'Please specify the desired rotation of ' + image_file_name + ' in degrees: ')
 
+    # attempt to parse the user input as an image, expected an error if incorrect values are provided
     try:
         rotated_image = RotatedImage(image_path, int(desired_rotation))
-    except():
+    except(OSError):
         print(image_file_name + ' and/or ' + desired_rotation +
               ' does not appear to be valid inputs! Try again:')
         return main_loop()
 
-    while True:
-        # draw the next frame of the slick animation
-        rotated_image.show()
+    # process and show the rotated image
+    print('Loading image...')
+    rotated_image.show()
+    print('Image loaded in new window!')
 
+    while True:
         # allow for keyboard interrupt
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break  # breaks the loop, ending the program
