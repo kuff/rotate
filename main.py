@@ -17,7 +17,7 @@ def main_loop():
     desired_rotation = input(
         'Please specify the desired rotation of ' + image_file_name + ' in degrees: ')
 
-    # attempt to parse the user input as an image, expected an error if incorrect values are provided
+    # attempt to parse the user input as an image, expecting an error if incorrect values are provided
     try:
         rotated_image = RotatedImage(image_path, int(desired_rotation))
     except(OSError):
@@ -28,7 +28,7 @@ def main_loop():
     # process and show the rotated image
     print('Loading image...')
     rotated_image.show()
-    print('Image loaded in new window!')
+    print('Image loaded in new window. Press \'q\' to quit!')
 
     while True:
         # allow for keyboard interrupt

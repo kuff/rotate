@@ -65,7 +65,7 @@ class RotatedImage:
         for x in range(width):
             for y in range(height):
                 new_x, new_y = new_coordinates[x, y]
-                new_image[new_x + x_offset][new_y] = img[x][y]
+                new_image[new_x + x_offset][new_y + y_offset] = img[x][y]
 
         # TODO: pixel interpolation
 
