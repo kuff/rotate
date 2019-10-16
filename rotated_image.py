@@ -105,7 +105,7 @@ class RotatedImage:
         ''' Render a GUI window with the rotated image. '''
 
         # show the rotated image using both the custom algorithm implemented above, as well as an external library method
-        imshow(self.image_path_name +
-               ' rotated using custom algorithm', self._rotate())
-        imshow(self.image_path_name + ' rotated using external library (imutils.rotate_bounds)',
+        imshow('%s rotated %s degrees using custom algorithm' %
+               (self.image_path_name, self.degrees), self._rotate())
+        imshow('%s rotated %s degrees using external library (imutils.rotate_bounds)' % (self.image_path_name, self.degrees),
                best_case(self.image, self.degrees))
