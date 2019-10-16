@@ -23,7 +23,7 @@ class RotatedImage:
         # define input variables
         img = self.image  # shorthand
         width, height = (len(img), len(img[0]))
-        deg = (pi/180) * self.degrees  # converting degrees to radinas
+        rad = (pi/180) * self.degrees  # converting degrees to radinas
 
         # define the array to hold the new pixel coordinates of the rotated image
         new_coordinates = np.zeros((width, height), dtype=tuple)
@@ -38,8 +38,8 @@ class RotatedImage:
         for x in range(width):
             for y in range(height):
                 # calculate new pixel coordinates using the formular for clockwise rotation
-                new_x = round(x * cos(deg) + y * sin(deg))
-                new_y = round(-x * sin(deg) + y * cos(deg))
+                new_x = round(x * cos(rad) + y * sin(rad))
+                new_y = round(-x * sin(rad) + y * cos(rad))
                 new_coordinates[x, y] = (new_x, new_y)
 
                 # check for smallest/largest x/y, used to offset the final image
@@ -67,7 +67,32 @@ class RotatedImage:
                 new_x, new_y = new_coordinates[x, y]
                 new_image[new_x + x_offset][new_y + y_offset] = img[x][y]
 
-        # TODO: pixel interpolation
+        # do pixel interpolation on leftover black pixels
+        for x in range(1, new_width - 1):
+            for y in range(1, new_height - 1):
+                if all(value == 0 for value in new_image[x, y]):
+                    # define the neighbors of the selected black pixel
+                    pixel_up = new_image[x - 1, y]
+                    pixel_down = new_image[x + 1, y]
+                    pixel_left = new_image[x, y - 1]
+                    pixel_right = new_image[x, y + 1]
+
+                    # pass immidiately if all neigbor pixels are black aswell
+                    if all(all(value == 0 for value in pixel) for pixel in [pixel_up, pixel_down, pixel_left, pixel_right]):
+                        continue
+
+                    # calculate the avarage of each RGB value
+                    avarage_red = int(round((
+                        float(pixel_up[0]) + float(pixel_down[0]) + float(pixel_left[0]) + float(pixel_right[0]))/4))
+                    avarage_green = int(round((
+                        float(pixel_up[1]) + float(pixel_down[1]) + float(pixel_left[1]) + float(pixel_right[1]))/4))
+                    avarage_blue = int(round((
+                        float(pixel_up[2]) + float(pixel_down[2]) + float(pixel_left[2]) + float(pixel_right[2]))/4))
+
+                    # paste new RGB values into the black pixel
+                    new_image[x, y, 0] = avarage_red
+                    new_image[x, y, 1] = avarage_green
+                    new_image[x, y, 2] = avarage_blue
 
         # finally, return the new image
         return new_image
