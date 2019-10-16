@@ -4,8 +4,6 @@ from rotated_image import *
 
 
 def main_loop():
-    # TODO: cool splash screen
-
     # request import image from user
     image_path = input(
         'Please provide a path to the image you want rotated: ')
@@ -28,7 +26,7 @@ def main_loop():
     # process and show the rotated image
     print('Loading image...')
     rotated_image.show()
-    print('Image loaded in new window. Press \'q\' to quit!')
+    print('Images loaded in new windows. Press \'q\' on any of them to quit!')
 
     while True:
         # allow for keyboard interrupt

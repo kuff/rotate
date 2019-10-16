@@ -1,3 +1,4 @@
+from imutils import rotate_bound as best_case  # only used for comparison
 from cv2 import imread, imshow
 import numpy as np
 from math import *
@@ -16,7 +17,7 @@ class RotatedImage:
         if self.image is None:
             raise(OSError)
 
-    def _rotate(self):  # TODO: the rotated image has holes
+    def _rotate(self):
         ''' Rotate the image that the associated object represents.
         Note: this class method should be considered protected '''
 
@@ -106,4 +107,7 @@ class RotatedImage:
             self.rotated_image = self._rotate()
 
         # show the rotated image with the image file name as the window header
-        imshow(self.image_path_name, self.rotated_image)
+        imshow(self.image_path_name +
+               ' rotated using custom algorithm', self.rotated_image)
+        imshow(self.image_path_name + ' rotated using external library',
+               best_case(self.image, self.degrees))
