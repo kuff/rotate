@@ -1,6 +1,6 @@
-import cv2
-from utils import *
-from rotated_image import *
+from cv2 import waitKey, destroyAllWindows
+from utils import get_file_name
+from rotated_image import RotatedImage
 
 
 def main_loop():
@@ -30,10 +30,10 @@ def main_loop():
 
     while True:
         # allow for keyboard interrupt
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if waitKey(1) & 0xFF == ord('q'):
             break  # breaks the loop, ending the program
 
 
 if __name__ == "__main__":
     main_loop()
-    cv2.destroyAllWindows()
+    destroyAllWindows()

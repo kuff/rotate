@@ -1,33 +1,34 @@
+from numpy import zeros as populated_array, uint8
 from imutils import rotate_bound as best_case  # only used for comparison
 from cv2 import imread, imshow
-import numpy as np
-from math import *
-from utils import get_file_name
+from utils import get_file_name  # local utility function
+from math import sin, cos, pi
 
 
 class RotatedImage:
     ''' Represents a rotated image '''
 
     def __init__(self, image_path, degrees):
-        self.image_path = image_path
+        self.image_path = image_path  # the file system path to the input image
         self.image_path_name = get_file_name(self.image_path)
-        self.degrees = degrees
-        self.image = imread(image_path)
-        self.rotated_image = None
+        self.degrees = degrees  # the amount of degrees to rotate the image
+        self.image = imread(image_path)  # the input image object
         if self.image is None:
+            # raise an error if the input image could not be located given the file system path
             raise(OSError)
 
     def _rotate(self):
-        ''' Rotate the image that the associated object represents.
+        ''' Rotate (clockwise) the image that the associated object represents.
         Note: this class method should be considered protected '''
 
         # define input variables
         img = self.image  # shorthand
+        # define the width and height of the input image
         width, height = (len(img), len(img[0]))
         rad = (pi/180) * self.degrees  # converting degrees to radinas
 
         # define the array to hold the new pixel coordinates of the rotated image
-        new_coordinates = np.zeros((width, height), dtype=tuple)
+        new_coordinates = populated_array((width, height), dtype=tuple)
 
         # define the variables used to offset the final image
         smallest_new_x = None
@@ -41,6 +42,8 @@ class RotatedImage:
                 # calculate new pixel coordinates using the formular for clockwise rotation
                 new_x = round(x * cos(rad) + y * sin(rad))
                 new_y = round(-x * sin(rad) + y * cos(rad))
+
+                # save the new coordinates to a new array
                 new_coordinates[x, y] = (new_x, new_y)
 
                 # check for smallest/largest x/y, used to offset the final image
@@ -60,7 +63,7 @@ class RotatedImage:
         y_offset = -smallest_new_y
 
         # define the new image and fill it with black pixels
-        new_image = np.zeros((new_width, new_height, 3), np.uint8)
+        new_image = populated_array((new_width, new_height, 3), uint8)
 
         # insert pixels into new image
         for x in range(width):
@@ -78,7 +81,7 @@ class RotatedImage:
                     pixel_left = new_image[x, y - 1]
                     pixel_right = new_image[x, y + 1]
 
-                    # pass immidiately if all neigbor pixels are black aswell
+                    # continue immidiately if all neigbor pixels are black aswell
                     if all(all(value == 0 for value in pixel) for pixel in [pixel_up, pixel_down, pixel_left, pixel_right]):
                         continue
 
@@ -99,15 +102,10 @@ class RotatedImage:
         return new_image
 
     def show(self):
-        ''' Render a GUI window with the rotated image.
-        Note: the rotated image is cached and must be cleared for a new rotated render to be generate '''
+        ''' Render a GUI window with the rotated image. '''
 
-        # generate the rotated version of the image if it hasn't been doen already
-        if self.rotated_image is None:  # caching
-            self.rotated_image = self._rotate()
-
-        # show the rotated image with the image file name as the window header
+        # show the rotated image using both the custom algorithm implemented above, as well as an external library method
         imshow(self.image_path_name +
-               ' rotated using custom algorithm', self.rotated_image)
-        imshow(self.image_path_name + ' rotated using external library',
+               ' rotated using custom algorithm', self._rotate())
+        imshow(self.image_path_name + ' rotated using external library (imutils.rotate_bounds)',
                best_case(self.image, self.degrees))
