@@ -1,3 +1,5 @@
+import argparse
+
 from cv2 import destroyAllWindows, waitKey
 
 from rotation import ImageCollection
@@ -5,26 +7,24 @@ from utils import get_file_name
 
 
 def main_loop():
-    # request import image from user
-    image_path = input(
-        'Please provide a path to the image you want rotated: ')
+    # parse program arguments
+    parser = argparse.ArgumentParser(
+        prog='rotate.py', description='Rotate an image.')
+    parser.add_argument(
+        'image', type=str, help='the image to rotate')
+    parser.add_argument(
+        'degrees', type=int, help='the amount of degrees to rotate the image by')
+    parser.add_argument(
+        'x', type=str, help='the point of rotation on the x-axis')  # TODO: implement this
+    parser.add_argument(
+        'y', type=str, help='the point of rotation on the y-axis')  # TODO: implement this
+    #parser.add_argument('--clockwise', '--cw', action='store_true', help='rotate image clockwise (Default: counter-clockwise)')
+    args = parser.parse_args()
 
-    # remember file input image name
-    image_file_name = get_file_name(image_path)
+    # create new image collection using provided program arguments
+    image_collection = ImageCollection(args.image, args.degrees)
 
-    # request desired rotation in degrees
-    desired_rotation = input(
-        'Please specify the desired rotation of ' + image_file_name + ' in degrees: ')
-
-    # attempt to parse the user input as an image, expecting an error if incorrect values are provided
-    try:
-        image_collection = ImageCollection(image_path, int(desired_rotation))
-    except(OSError):
-        print(image_file_name + ' and/or ' + desired_rotation +
-              ' does not appear to be valid inputs! Try again:')
-        return main_loop()
-
-    # process and show the rotated image
+    # process and show the rotated images
     print('Loading images...')
     image_collection.show()
     print('Images loaded in new windows. Press \'q\' on any of them to quit!')
@@ -37,4 +37,4 @@ def main_loop():
 
 if __name__ == "__main__":
     main_loop()
-    destroyAllWindows()
+    destroyAllWindows()  # cleanup
