@@ -1,8 +1,11 @@
-from numpy import zeros as populated_array, uint8
+from math import cos, pi, sin
+
 from cv2 import imread, imshow
-from math import sin, cos, pi
-from utils import get_file_name  # local utility function
 from imutils import rotate as best_case  # only used for comparison
+from numpy import uint8
+from numpy import zeros as populated_array
+
+from utils import get_file_name  # local utility function
 
 
 class RotatedImage:  # abstract class

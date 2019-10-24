@@ -1,6 +1,7 @@
-from cv2 import waitKey, destroyAllWindows
-from utils import get_file_name
+from cv2 import destroyAllWindows, waitKey
+
 from rotation import ImageCollection
+from utils import get_file_name
 
 
 def main_loop():
