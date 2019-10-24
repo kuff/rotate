@@ -1,6 +1,6 @@
 from cv2 import waitKey, destroyAllWindows
 from utils import get_file_name
-from rotated_image import RotatedImage
+from rotation import ImageCollection
 
 
 def main_loop():
@@ -17,15 +17,15 @@ def main_loop():
 
     # attempt to parse the user input as an image, expecting an error if incorrect values are provided
     try:
-        rotated_image = RotatedImage(image_path, int(desired_rotation))
+        image_collection = ImageCollection(image_path, int(desired_rotation))
     except(OSError):
         print(image_file_name + ' and/or ' + desired_rotation +
               ' does not appear to be valid inputs! Try again:')
         return main_loop()
 
     # process and show the rotated image
-    print('Loading image...')
-    rotated_image.show()
+    print('Loading images...')
+    image_collection.show()
     print('Images loaded in new windows. Press \'q\' on any of them to quit!')
 
     while True:
