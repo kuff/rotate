@@ -1,11 +1,10 @@
 from math import cos, pi, sin
+from os.path import basename as get_file_name
 
 from cv2 import imread, imshow
-from imutils import rotate as best_case  # only used for comparison
+from imutils import rotate as best_case  # only used for comparison purposes
 from numpy import uint8
 from numpy import zeros as populated_array
-
-from utils import get_file_name  # local utility function
 
 
 class RotatedImage:  # abstract class
@@ -13,7 +12,6 @@ class RotatedImage:  # abstract class
 
     def __init__(self, image_path, degrees):
         self.image_path = image_path  # the file system path to the input image
-        self.image_path_name = get_file_name(self.image_path)
         self.degrees = degrees  # the amount of degrees to rotate the image
         self.image = imread(image_path)  # the input image object
         if self.image is None:
@@ -22,7 +20,7 @@ class RotatedImage:  # abstract class
 
     def __str__(self):
         deg = 'degree' if self.degrees == -1 or self.degrees == 1 else 'degrees'
-        return '%s rotated %s %s' % (self.image_path_name, self.degrees, deg)
+        return '%s rotated %s %s' % (get_file_name(self.image_path), self.degrees, deg)
 
     def _rotate(self):
         raise NotImplementedError
