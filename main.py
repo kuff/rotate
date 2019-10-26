@@ -1,8 +1,8 @@
-import argparse
+import argparse  # for parsing user input and handling exceptions
 
-from cv2 import destroyAllWindows, waitKey
+from cv2 import destroyAllWindows, waitKey  # for cleanup and termination
 
-from rotation import ImageCollection
+from rotation import ImageCollection  # for managing rotated images
 
 
 def main_loop():
@@ -10,18 +10,21 @@ def main_loop():
     parser = argparse.ArgumentParser(
         prog='rotate.py', description='Rotate an image.')
     parser.add_argument(
-        'image', type=str, help='the image to rotate')
+        'image', type=str, help='the image to be rotated')
     parser.add_argument(
         'degrees', type=int, help='the amount of degrees to rotate the image by')
     parser.add_argument(
-        'x', type=str, help='the point of rotation on the x-axis')  # TODO: implement this
+        'x', type=int, help='the point of rotation on the x-axis')
     parser.add_argument(
-        'y', type=str, help='the point of rotation on the y-axis')  # TODO: implement this
-    #parser.add_argument('--clockwise', '--cw', action='store_true', help='rotate image clockwise (Default: counter-clockwise)')
+        'y', type=int, help='the point of rotation on the y-axis')
+    parser.add_argument(  # not a requirement
+        '--clockwise', '--cw', action='store_true', help='rotate image clockwise (Default: counter-clockwise)')
     args = parser.parse_args()
 
+    print(args.clockwise)
     # create new image collection using provided program arguments
-    image_collection = ImageCollection(args.image, args.degrees)
+    image_collection = ImageCollection(
+        args.image, args.degrees, args.x, args.y, args.clockwise)
 
     # process and show the rotated images
     print('Loading images...')
