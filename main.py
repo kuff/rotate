@@ -21,7 +21,6 @@ def main_loop():
         '--clockwise', '--cw', action='store_true', help='rotate image clockwise (Default: counter-clockwise)')
     args = parser.parse_args()
 
-    print(args.clockwise)
     # create new image collection using provided program arguments
     image_collection = ImageCollection(
         args.image, args.degrees, args.x, args.y, args.clockwise)
